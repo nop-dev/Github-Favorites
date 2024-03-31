@@ -11,7 +11,7 @@
     <div id="app">
         <header>
             <h1>Github Favorites</h1>
-            <div>
+            <div id="search">
                 <label class="sr-only" for="searchbar">Usuário do Github</label>
                 <input id="searchbar" type="text" placeholder="Usuário do Github">
                 <button>&plus;</button>
@@ -39,7 +39,9 @@
                     </td>
                     <td class="repositories">33</td>
                     <td class="followers">10</td>
-                    <td>&times;</td>
+                    <td>
+                        <button class="remove">&times;</button>
+                    </td>
                 </tr>
 
                 <tr>
@@ -52,7 +54,9 @@
                     </td>
                     <td class="repositories">121</td>
                     <td class="followers">15.3k</td>
-                    <td>&times;</td>
+                    <td>
+                        <button class="remove">&times;</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
