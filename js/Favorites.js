@@ -6,27 +6,15 @@ export class Favorites {
     };
     
     load() {
-        this.entries = [
-            {
-                login: "maykbrito",
-                name: "Mayk Brito",
-                public_repos: "98",
-                followers: "12k",      
-            },
-            {
-                login: "Nop-Dev",
-                name: "Yuri Sousa",
-                public_repos: "33",
-                followers: "12"    ,        
-            }
-        ]
-    }
+        this.entries = JSON.parse(localStorage.getItem
+        ('github-favorites:')) || [];
+    };
 
     delete(user) {
-        const filteredEntries = this.entries.filter(entry => entry.login !== user.login); 
+        this.entries = this.entries.filter(entry => entry.login !== user.login); 
         
-        console.log(filteredEntries)
-    }
+        this.update();
+    };
 };
 
 // classe pra construir o HTML
@@ -57,11 +45,11 @@ export class FavoritesView extends Favorites {
                const isOk = confirm('Tem certeza que quer deletar essa linha?');
             if(isOk) {
                 this.delete(user);
-               }    
+               };    
             };
  
             this.tbody.append(row);
-        })
+        });
     };
 
     createRow() {
@@ -80,11 +68,11 @@ export class FavoritesView extends Favorites {
             <td>
                 <button class="remove">&times;</button>
             </td>
-    `
+    `;
         tr.innerHTML = content;
 
-        return tr
-    }
+        return tr;
+    };
 
     removeAllTr() {
         this.tbody.querySelectorAll('tr')
