@@ -21,6 +21,12 @@ export class Favorites {
             }
         ]
     }
+
+    delete(user) {
+        const filteredEntries = this.entries.filter(entry => entry.login !== user.login); 
+        
+        console.log(filteredEntries)
+    }
 };
 
 // classe pra construir o HTML
@@ -28,7 +34,6 @@ export class FavoritesView extends Favorites {
     constructor(root) {
         super(root);
 
-        console.log(this.root);
         this.tbody = this.root.querySelector("table tbody");
 
         this.update();
@@ -48,6 +53,13 @@ export class FavoritesView extends Favorites {
             row.querySelector('.repositories').textContent = `${user.public_repos}`;
             row.querySelector('.followers').textContent = `${user.followers}`;
 
+            row.querySelector('.remove').onclick = () => {
+               const isOk = confirm('Tem certeza que quer deletar essa linha?');
+            if(isOk) {
+                this.delete(user);
+               }    
+            };
+ 
             this.tbody.append(row);
         })
     };
