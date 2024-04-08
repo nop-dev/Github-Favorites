@@ -1,18 +1,5 @@
 // classe pra buscar os dados na api do github
-export class GithubUser {
-    static search(username) {
-        const endpoint = `https://api.github.com/users/${username}`
-
-        return fetch(endpoint)
-        .then(data => data.json())
-        .then(({ name, login, public_repos, followers }) => ({
-            login,
-            name,
-            public_repos,
-            followers
-        }))
-    }
-}
+import { GithubUser } from "./GithubUser.js";
 
 // classe para obter e guardar dados
 export class Favorites {
@@ -20,19 +7,40 @@ export class Favorites {
         this.root = document.querySelector(root);
         this.load();
 
-        GithubUser.search("Nop-Dev").then(user => console.log(user))
+        GithubUser.search("Nop-Dev").then(user => console.log(user));
     };
     
     load() {
         this.entries = JSON.parse(localStorage.getItem
-        ('github-favorites:')) || [];
+        ('@github-favorites:')) || [];
     };
 
-    
-    async add(username) {
-        const user = await GithubUser.search(username);
+    save() {
+        localStorage.setItem('@github-favorites:', JSON.stringify(this.entries));
+    };
 
-        console.log(user)
+    async add(username) {
+        try {
+            const userExists = this.entries.find(entry => entry.login === username);
+
+            if(userExists) {
+                throw new Error('Usuário já cadastrado...');
+            };
+
+            const user = await GithubUser.search(username);
+
+            console.log(user);
+
+            if(user.login === undefined) {
+                throw new Error('Usuário não encontrado, tente novamente...');
+            };
+
+            this.entries = [user, ...this.entries];
+            this.update();
+
+        } catch(error) {
+            alert(error.message);
+        };
     };
 
     delete(user) {
@@ -84,6 +92,8 @@ export class FavoritesView extends Favorites {
             };
  
             this.tbody.append(row);
+
+            this.save();
         });
     };
 
